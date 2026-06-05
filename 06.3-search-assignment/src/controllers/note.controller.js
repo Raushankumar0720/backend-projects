@@ -19,3 +19,18 @@ exports.createNote = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 2. POST /api/notes/bulk — Create bulk notes
+exports.createNotesBulk = async (req, res) => {
+  try {
+    const { notes } = req.body || {};
+    if (!notes || !Array.isArray(notes) || notes.length === 0) {
+      return res.status(400).json({ success: false, message: "notes array is required and cannot be empty", data: null });
+    }
+    const createdNotes = await Note.insertMany(notes);
+    return res.status(201).json({ success: true, message: `${createdNotes.length} notes created successfully`, data: createdNotes });
+  } catch (error) {
+    if (error.name === "ValidationError") return res.status(400).json({ success: false, message: error.message, data: null });
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
