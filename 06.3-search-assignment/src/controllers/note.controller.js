@@ -141,3 +141,20 @@ exports.searchByContent = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 11. GET /api/notes/search/all — Search title + content
+exports.searchAll = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) return res.status(400).json({ success: false, message: "Search query 'q' is required", data: null });
+    const notes = await Note.find({
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { content: { $regex: q, $options: "i" } }
+      ]
+    });
+    return res.status(200).json({ success: true, message: `Search results for: ${q}`, count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
