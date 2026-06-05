@@ -1,0 +1,18 @@
+{
+  "name": "06.3-search-assignment",
+  "version": "1.0.0",
+  "description": "Notes REST API - Search and Combined Queries",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
