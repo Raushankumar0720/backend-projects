@@ -251,3 +251,35 @@ exports.paginateByCategory = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 18. GET /api/notes/sort — Sort notes
+exports.sortNotes = async (req, res) => {
+  try {
+    const allowedSortFields = ["title", "createdAt", "updatedAt", "category"];
+    const sortBy = req.query.sortBy || "createdAt";
+    const orderStr = req.query.order || "desc";
+    if (!allowedSortFields.includes(sortBy)) return res.status(400).json({ success: false, message: "Invalid sortBy. Allowed: title, createdAt, updatedAt, category", data: null });
+    const order = orderStr === "asc" ? 1 : -1;
+    const notes = await Note.find().sort({ [sortBy]: order });
+    const orderText = order === 1 ? "ascending" : "descending";
+    return res.status(200).json({ success: true, message: `Notes sorted by ${sortBy} in ${orderText} order`, count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
+
+// 19. GET /api/notes/sort/pinned — Sort pinned notes
+exports.sortPinnedNotes = async (req, res) => {
+  try {
+    const allowedSortFields = ["title", "createdAt", "updatedAt", "category"];
+    const sortBy = req.query.sortBy || "createdAt";
+    const orderStr = req.query.order || "desc";
+    if (!allowedSortFields.includes(sortBy)) return res.status(400).json({ success: false, message: "Invalid sortBy. Allowed: title, createdAt, updatedAt, category", data: null });
+    const order = orderStr === "asc" ? 1 : -1;
+    const notes = await Note.find({ isPinned: true }).sort({ [sortBy]: order });
+    const orderText = order === 1 ? "ascending" : "descending";
+    return res.status(200).json({ success: true, message: `Pinned notes sorted by ${sortBy} in ${orderText} order`, count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
