@@ -1,0 +1,278 @@
+{
+  "info": {
+    "_postman_id": "7a8c5b9e-4e3f-42a1-bd8d-6c1d8c5b9e0f",
+    "name": "Notes Management API",
+    "description": "Postman Collection for Notes Management REST API - Node.js, Express, MongoDB assignment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Create Note",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Team standup agenda\",\n  \"content\": \"Discuss sprint blockers and deployment plan\",\n  \"category\": \"work\",\n  \"isPinned\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes"
+          ]
+        },
+        "description": "Creates a single note in the database."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Create Notes Bulk",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"notes\": [\n    { \"title\": \"Note one\",   \"content\": \"Content one\",   \"category\": \"work\"     },\n    { \"title\": \"Note two\",   \"content\": \"Content two\",   \"category\": \"study\"    },\n    { \"title\": \"Note three\", \"content\": \"Content three\", \"category\": \"personal\" }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes/bulk",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "bulk"
+          ]
+        },
+        "description": "Creates multiple notes at once."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get All Notes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes"
+          ]
+        },
+        "description": "Retrieves all notes from the database."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Get Note by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/notes/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "64b1f2c3e4d5a6b7c8d9e0f1",
+              "description": "Note ObjectId"
+            }
+          ]
+        },
+        "description": "Retrieves a single note by its ID."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Replace Note (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Completely new title\",\n  \"content\": \"Completely new content\",\n  \"category\": \"personal\",\n  \"isPinned\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "64b1f2c3e4d5a6b7c8d9e0f1",
+              "description": "Note ObjectId"
+            }
+          ]
+        },
+        "description": "Replaces the entire note document. Omitted fields will reset to their defaults."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Update Note (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"isPinned\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "64b1f2c3e4d5a6b7c8d9e0f1",
+              "description": "Note ObjectId"
+            }
+          ]
+        },
+        "description": "Updates only the specific fields provided in the request body."
+      },
+      "response": []
+    },
+    {
+      "name": "7. Delete Note",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/notes/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "64b1f2c3e4d5a6b7c8d9e0f1",
+              "description": "Note ObjectId"
+            }
+          ]
+        },
+        "description": "Deletes a single note from the database."
+      },
+      "response": []
+    },
+    {
+      "name": "8. Delete Notes Bulk",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ids\": [\n    \"64b1f2c3e4d5a6b7c8d9e0f1\",\n    \"64b1f2c3e4d5a6b7c8d9e0f2\",\n    \"64b1f2c3e4d5a6b7c8d9e0f3\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes/bulk",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "bulk"
+          ]
+        },
+        "description": "Deletes multiple notes from the database by their IDs."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}
