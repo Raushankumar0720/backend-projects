@@ -7,7 +7,7 @@ A fresh implementation of the Notes Management API extending basic CRUD capabili
 ## 🔗 Links
 - **Postman Published Documentation:** [View API Docs](https://documenter.getpostman.com/view/50841514/2sBXwpQCgC)
 - **Postman Import File:** [`Notes_Advanced_API.postman_collection.json`](./Notes_Advanced_API.postman_collection.json)
-- **Live Deployed API:** [View Live API](https://backend-projects-lho4.onrender.com/)
+- **Live Deployed API:** [View Live API](https://backend-projects-6ocn.onrender.com/)
 
 ---
 
