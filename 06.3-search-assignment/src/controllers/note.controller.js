@@ -34,3 +34,13 @@ exports.createNotesBulk = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 3. GET /api/notes — Read all notes
+exports.getAllNotes = async (req, res) => {
+  try {
+    const notes = await Note.find();
+    return res.status(200).json({ success: true, message: "Notes fetched successfully", count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
