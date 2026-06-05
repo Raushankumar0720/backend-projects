@@ -1,0 +1,421 @@
+{
+  "info": {
+    "_postman_id": "9b1d8c5b-4e3f-42a1-bd8d-6c1d8c5b9e0f",
+    "name": "Notes Advanced API",
+    "description": "Postman Collection for Assignment 02: Notes Management REST API with Advanced Routing & Queries (filtering, sorting, pagination).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. CRUD Endpoints",
+      "item": [
+        {
+          "name": "1. Create Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Team standup agenda\",\n  \"content\": \"Discuss sprint blockers and deployment plan\",\n  \"category\": \"work\",\n  \"isPinned\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes"]
+            }
+          }
+        },
+        {
+          "name": "2. Create Notes Bulk",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": [\n    { \"title\": \"Note one\",   \"content\": \"Content one\",   \"category\": \"work\"     },\n    { \"title\": \"Note two\",   \"content\": \"Content two\",   \"category\": \"study\"    },\n    { \"title\": \"Note three\", \"content\": \"Content three\", \"category\": \"personal\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/bulk",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "bulk"]
+            }
+          }
+        },
+        {
+          "name": "3. Get All Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes"]
+            }
+          }
+        },
+        {
+          "name": "4. Get Note by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "64b1f2c3e4d5a6b7c8d9e0f1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Replace Note (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Completely new title\",\n  \"content\": \"Completely new content\",\n  \"category\": \"personal\",\n  \"isPinned\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "64b1f2c3e4d5a6b7c8d9e0f1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Update Note (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isPinned\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "64b1f2c3e4d5a6b7c8d9e0f1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "7. Delete Note",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/notes/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "64b1f2c3e4d5a6b7c8d9e0f1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "8. Delete Notes Bulk",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": [\n    \"64b1f2c3e4d5a6b7c8d9e0f1\",\n    \"64b1f2c3e4d5a6b7c8d9e0f2\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/bulk",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "bulk"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Route Parameters",
+      "item": [
+        {
+          "name": "9. Get Notes by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/category/:category",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "category", ":category"],
+              "variable": [
+                {
+                  "key": "category",
+                  "value": "work"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "10. Get Notes by Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/status/:isPinned",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "status", ":isPinned"],
+              "variable": [
+                {
+                  "key": "isPinned",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "11. Get Note Summary",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/:id/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", ":id", "summary"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "64b1f2c3e4d5a6b7c8d9e0f1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Query Parameters",
+      "item": [
+        {
+          "name": "12. General Filter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter?category=work&isPinned=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "filter"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "work"
+                },
+                {
+                  "key": "isPinned",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "13. Filter Pinned Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter/pinned?category=work",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "filter", "pinned"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "work"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "14. Filter by Category (Query)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter/category?name=work",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "filter", "category"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "work"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "15. Filter by Date Range",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter/date-range?from=2024-01-01&to=2024-12-31",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "filter", "date-range"],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "to",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Pagination",
+      "item": [
+        {
+          "name": "16. Paginate All Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/paginate?page=1&limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "paginate"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "17. Paginate by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/paginate/category/:category?page=1&limit=3",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "paginate", "category", ":category"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "3"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "category",
+                  "value": "work"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Sorting",
+      "item": [
+        {
+          "name": "18. Sort All Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/sort?sortBy=title&order=asc",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "sort"],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "19. Sort Pinned Notes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/notes/sort/pinned?sortBy=title&order=desc",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notes", "sort", "pinned"],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}
