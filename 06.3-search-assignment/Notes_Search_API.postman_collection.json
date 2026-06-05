@@ -1,179 +1,722 @@
 {
   "info": {
-    "name": "Notes_Search_API",
+    "_postman_id": "8b9fd462-5b9e-4c74-bf74-0f2c41c7df9a",
+    "name": "Notes Search & Combined Queries API",
+    "description": "Comprehensive API collection for Assignment 03, including basic CRUD, text search via regex, dual-concept combinations, triple-concept combinations, and the Master query endpoint.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "CRUD Endpoints",
+      "name": "1. CRUD Operations",
       "item": [
         {
-          "name": "Create Note",
+          "name": "Create Note (POST /api/notes)",
           "request": {
             "method": "POST",
-            "url": "{{base_url}}/api/notes",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Work standup\",\n  \"content\": \"Discuss deployment targets\",\n  \"category\": \"work\",\n  \"isPinned\": true\n}"
-            }
-          }
+              "raw": "{\n  \"title\": \"Work standup meeting\",\n  \"content\": \"Discuss deployment targets and hooks\",\n  \"category\": \"work\",\n  \"isPinned\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes"
+              ]
+            },
+            "description": "Creates a single note. Title and Content are required."
+          },
+          "response": []
         },
         {
-          "name": "Create Bulk Notes",
+          "name": "Create Bulk Notes (POST /api/notes/bulk)",
           "request": {
             "method": "POST",
-            "url": "{{base_url}}/api/notes/bulk",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"notes\": [\n    {\n      \"title\": \"Study Math\",\n      \"content\": \"Solve algebra problems\",\n      \"category\": \"study\",\n      \"isPinned\": false\n    },\n    {\n      \"title\": \"Buy Groceries\",\n      \"content\": \"Apples, Milk, Bread\",\n      \"category\": \"personal\",\n      \"isPinned\": false\n    }\n  ]\n}"
-            }
-          }
+              "raw": "{\n  \"notes\": [\n    { \"title\": \"Study Math notes\", \"content\": \"Solve algebra problems\", \"category\": \"study\", \"isPinned\": false },\n    { \"title\": \"Buy Groceries\", \"content\": \"Apples, Milk, Bread\", \"category\": \"personal\", \"isPinned\": false },\n    { \"title\": \"Work Code Review\", \"content\": \"Review PR #45\", \"category\": \"work\", \"isPinned\": true },\n    { \"title\": \"Study Node.js and MVC\", \"content\": \"Read model view controller chapter\", \"category\": \"study\", \"isPinned\": false },\n    { \"title\": \"Personal Workout\", \"content\": \"Go to gym for 1 hour\", \"category\": \"personal\", \"isPinned\": true }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/bulk",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "bulk"
+              ]
+            },
+            "description": "Bulk creates multiple notes at once."
+          },
+          "response": []
         },
         {
-          "name": "Get All Notes",
+          "name": "Get All Notes (GET /api/notes)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes"
+              ]
+            },
+            "description": "Fetches all notes in the database."
+          },
+          "response": []
         },
         {
-          "name": "Get Note by ID",
+          "name": "Get Note By ID (GET /api/notes/:id)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/:id"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/6a22da54051d959bbbf067f4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "6a22da54051d959bbbf067f4"
+              ]
+            },
+            "description": "Fetches a single note using its MongoDB ObjectId."
+          },
+          "response": []
         },
         {
-          "name": "Replace Note",
+          "name": "Replace Note Completely (PUT /api/notes/:id)",
           "request": {
             "method": "PUT",
-            "url": "{{base_url}}/api/notes/:id",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Replaced Title\",\n  \"content\": \"Replaced content\",\n  \"category\": \"personal\",\n  \"isPinned\": false\n}"
-            }
-          }
+              "raw": "{\n  \"title\": \"Completely Replaced Agenda\",\n  \"content\": \"Omitted fields will reset to model defaults\",\n  \"category\": \"personal\",\n  \"isPinned\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/6a22da54051d959bbbf067f4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "6a22da54051d959bbbf067f4"
+              ]
+            },
+            "description": "Performs full resource replacement. Non-provided properties are reset to defaults."
+          },
+          "response": []
         },
         {
-          "name": "Partial Update Note",
+          "name": "Update Note Partially (PATCH /api/notes/:id)",
           "request": {
             "method": "PATCH",
-            "url": "{{base_url}}/api/notes/:id",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"isPinned\": true\n}"
-            }
-          }
+              "raw": "{\n  \"isPinned\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/6a22da54051d959bbbf067f4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "6a22da54051d959bbbf067f4"
+              ]
+            },
+            "description": "Performs partial modification of the note."
+          },
+          "response": []
         },
         {
-          "name": "Delete Note",
+          "name": "Delete Note Single (DELETE /api/notes/:id)",
           "request": {
             "method": "DELETE",
-            "url": "{{base_url}}/api/notes/:id"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/6a22da54051d959bbbf067f4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "6a22da54051d959bbbf067f4"
+              ]
+            },
+            "description": "Deletes a single note by ID."
+          },
+          "response": []
         },
         {
-          "name": "Delete Notes Bulk",
+          "name": "Delete Notes Bulk (DELETE /api/notes/bulk)",
           "request": {
             "method": "DELETE",
-            "url": "{{base_url}}/api/notes/bulk",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"ids\": []\n}"
-            }
-          }
+              "raw": "{\n  \"ids\": [\n    \"6a22da54051d959bbbf067f4\",\n    \"6a22da54051d959bbbf067f5\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notes/bulk",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "bulk"
+              ]
+            },
+            "description": "Deletes multiple notes specified in the ids array."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Note Summary (GET /api/notes/:id/summary)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/6a22da54051d959bbbf067f4/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "6a22da54051d959bbbf067f4",
+                "summary"
+              ]
+            },
+            "description": "Fetches note metadata excluding the main content body."
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Search Endpoints",
+      "name": "2. Search Queries",
       "item": [
         {
-          "name": "Search Title Only",
+          "name": "Search Title Only (GET /api/notes/search)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/search?q=work"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/search?q=Study",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Study",
+                  "description": "Required query text keyword"
+                }
+              ]
+            },
+            "description": "Searches case-insensitively in the note title only."
+          },
+          "response": []
         },
         {
-          "name": "Search Content Only",
+          "name": "Search Content Only (GET /api/notes/search/content)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/search/content?q=deployment"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/search/content?q=algebra",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "search",
+                "content"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "algebra",
+                  "description": "Required query text keyword"
+                }
+              ]
+            },
+            "description": "Searches case-insensitively in the note content body only."
+          },
+          "response": []
         },
         {
-          "name": "Search Title and Content",
+          "name": "Search Title and Content (GET /api/notes/search/all)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/search/all?q=node"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/search/all?q=work",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "search",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "work",
+                  "description": "Required query text keyword"
+                }
+              ]
+            },
+            "description": "Searches case-insensitively in either title OR content fields using MongoDB $or."
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Combined Queries (Two Concepts)",
+      "name": "3. Two Concepts Combined",
       "item": [
         {
-          "name": "Filter and Sort",
+          "name": "Filter and Sort (GET /api/notes/filter-sort)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/filter-sort?category=work&sortBy=title&order=asc"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter-sort?category=study&sortBy=title&order=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "filter-sort"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "study",
+                  "description": "Optional category filter"
+                },
+                {
+                  "key": "isPinned",
+                  "value": "false",
+                  "disabled": true,
+                  "description": "Optional pinning status filter"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "description": "Sort field (title, createdAt, updatedAt, category)"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "description": "Sort order (asc, desc)"
+                }
+              ]
+            },
+            "description": "Applies query-parameter filters and sorts results."
+          },
+          "response": []
         },
         {
-          "name": "Filter and Paginate",
+          "name": "Filter and Paginate (GET /api/notes/filter-paginate)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/filter-paginate?isPinned=true&page=1&limit=2"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter-paginate?isPinned=true&page=1&limit=2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "filter-paginate"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "work",
+                  "disabled": true,
+                  "description": "Optional category filter"
+                },
+                {
+                  "key": "isPinned",
+                  "value": "true",
+                  "description": "Optional pinning status filter"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (defaults to 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "description": "Results per page (defaults to 10)"
+                }
+              ]
+            },
+            "description": "Filters notes by query attributes and returns paginated results with page metadata."
+          },
+          "response": []
         },
         {
-          "name": "Sort and Paginate",
+          "name": "Sort and Paginate (GET /api/notes/sort-paginate)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/sort-paginate?sortBy=createdAt&order=desc&page=1&limit=5"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/sort-paginate?sortBy=title&order=asc&page=1&limit=4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "sort-paginate"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "description": "Sort order (asc, desc)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "4",
+                  "description": "Results limit"
+                }
+              ]
+            },
+            "description": "Sorts the whole list of notes and paginates the output."
+          },
+          "response": []
         },
         {
-          "name": "Search and Filter",
+          "name": "Search and Filter (GET /api/notes/search-filter)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/search-filter?q=meeting&category=work"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/search-filter?q=work&isPinned=true",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "search-filter"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "work",
+                  "description": "Required search keyword"
+                },
+                {
+                  "key": "category",
+                  "value": "work",
+                  "disabled": true,
+                  "description": "Optional category filter"
+                },
+                {
+                  "key": "isPinned",
+                  "value": "true",
+                  "description": "Optional pinning status filter"
+                }
+              ]
+            },
+            "description": "Searches notes matching a query word, and filters results concurrently."
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Combined Queries (Three Concepts)",
+      "name": "4. Combined Queries (Three Concepts)",
       "item": [
         {
-          "name": "Search, Sort and Paginate",
+          "name": "Search, Sort and Paginate (GET /api/notes/search-sort-paginate)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/search-sort-paginate?q=node&sortBy=title&order=asc&page=1&limit=2"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/search-sort-paginate?q=work&sortBy=title&order=desc&page=1&limit=2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "search-sort-paginate"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "work",
+                  "description": "Required search keyword"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "description": "Page limit"
+                }
+              ]
+            },
+            "description": "Performs keyword search, sorts findings, and applies pagination offsets."
+          },
+          "response": []
         },
         {
-          "name": "Filter, Sort and Paginate",
+          "name": "Filter, Sort and Paginate (GET /api/notes/filter-sort-paginate)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/filter-sort-paginate?category=work&isPinned=true&sortBy=createdAt&order=desc&page=1&limit=5"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/filter-sort-paginate?category=personal&sortBy=title&order=desc&page=1&limit=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "filter-sort-paginate"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "personal",
+                  "description": "Optional category filter"
+                },
+                {
+                  "key": "isPinned",
+                  "value": "true",
+                  "disabled": true,
+                  "description": "Optional pinning status filter"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "Page limit"
+                }
+              ]
+            },
+            "description": "Combines dynamic filters, sorting criteria, and pagination in a single API."
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Master Query Endpoint",
+      "name": "5. Master Query Endpoint",
       "item": [
         {
-          "name": "Master Query",
+          "name": "Master Query (GET /api/notes/query)",
           "request": {
             "method": "GET",
-            "url": "{{base_url}}/api/notes/query?q=meeting&category=work&isPinned=true&sortBy=title&order=desc&page=1&limit=3"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notes/query?q=meeting&category=work&isPinned=true&sortBy=title&order=desc&page=1&limit=3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notes",
+                "query"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "meeting",
+                  "description": "Optional search query"
+                },
+                {
+                  "key": "category",
+                  "value": "work",
+                  "description": "Optional category filter"
+                },
+                {
+                  "key": "isPinned",
+                  "value": "true",
+                  "description": "Optional pinning filter"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "description": "Optional sorting field"
+                },
+                {
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Optional sorting order"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Optional page index"
+                },
+                {
+                  "key": "limit",
+                  "value": "3",
+                  "description": "Optional results limit"
+                }
+              ]
+            },
+            "description": "The ultimate query endpoint. Combines Search, Filtering, Sorting, and Pagination. All parameters are optional."
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
     }
   ]
 }
