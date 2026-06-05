@@ -4,6 +4,7 @@ const noteController = require("../controllers/note.controller");
 
 router.post("/bulk", noteController.createNotesBulk);
 router.delete("/bulk", noteController.deleteNotesBulk);
+router.get("/search/content", noteController.searchByContent);
 router.get("/search", noteController.searchByTitle);
 router.post("/", noteController.createNote);
 router.get("/", noteController.getAllNotes);
