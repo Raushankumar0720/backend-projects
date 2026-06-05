@@ -5,7 +5,7 @@ A robust backend REST API built from scratch with **Node.js, Express, and MongoD
 ---
 
 ## 🔗 Links
-- **Postman Published Documentation:** [View API Docs](https://documenter.getpostman.com/view/50841514/2sBXwpQCgC) *(Update once published)*
+- **Postman Published Documentation:** [View API Docs](https://documenter.getpostman.com/view/50841514/2sBXwqqA6C)
 - **Live Deployed API:** [View Live API](https://backend-projects-6ocn.onrender.com/)
 
 ---
