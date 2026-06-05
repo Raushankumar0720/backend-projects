@@ -345,3 +345,60 @@ exports.filterSortPaginate = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 18. GET /api/notes/query — Everything at once (Master Endpoint)
+exports.masterQuery = async (req, res) => {
+  try {
+    const { q, category, isPinned, sortBy, order, page, limit } = req.query;
+    
+    const filter = {};
+    if (q) {
+      filter.$or = [
+        { title: { $regex: q, $options: "i" } },
+        { content: { $regex: q, $options: "i" } }
+      ];
+    }
+    if (category) filter.category = category;
+    if (isPinned !== undefined) filter.isPinned = isPinned === "true";
+    
+    const allowedSortFields = ["title", "createdAt", "updatedAt", "category"];
+    const sortField = allowedSortFields.includes(sortBy) ? sortBy : "createdAt";
+    const sortOrder = order === "asc" ? 1 : -1;
+    
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+    
+    const total = await Note.countDocuments(filter);
+    const notes = await Note.find(filter).sort({ [sortField]: sortOrder }).skip(skip).limit(limitNum);
+    
+    return res.status(200).json({
+      success: true,
+      message: "Notes fetched successfully",
+      data: notes,
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(total / limitNum),
+        hasNextPage: pageNum < Math.ceil(total / limitNum),
+        hasPrevPage: pageNum > 1
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message, data: null });
+  }
+};
+
+// Summary route (helper from assignment 2)
+exports.getNoteSummary = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!isValidObjectId(id)) return res.status(400).json({ success: false, message: "Invalid note ID", data: null });
+    const note = await Note.findById(id).select("title category isPinned createdAt");
+    if (!note) return res.status(404).json({ success: false, message: "Note not found", data: null });
+    return res.status(200).json({ success: true, message: "Note summary fetched successfully", data: note });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
