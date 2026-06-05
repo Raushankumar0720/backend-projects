@@ -117,3 +117,43 @@ exports.deleteNotesBulk = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 9. GET /api/notes/category/:category — Get notes by category
+exports.getNotesByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const allowedCategories = ["work", "personal", "study"];
+    if (!allowedCategories.includes(category)) return res.status(400).json({ success: false, message: "Invalid category. Allowed: work, personal, study", data: null });
+    const notes = await Note.find({ category });
+    if (notes.length === 0) return res.status(404).json({ success: false, message: `No notes found for category: ${category}`, data: null });
+    return res.status(200).json({ success: true, message: `Notes fetched for category: ${category}`, count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
+
+// 10. GET /api/notes/status/:isPinned — Get notes by status
+exports.getNotesByStatus = async (req, res) => {
+  try {
+    const { isPinned } = req.params;
+    if (isPinned !== "true" && isPinned !== "false") return res.status(400).json({ success: false, message: "isPinned must be true or false", data: null });
+    const pinned = isPinned === "true";
+    const notes = await Note.find({ isPinned: pinned });
+    return res.status(200).json({ success: true, message: pinned ? "Fetched all pinned notes" : "Fetched all unpinned notes", count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
+
+// 11. GET /api/notes/:id/summary — Get summary
+exports.getNoteSummary = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!isValidObjectId(id)) return res.status(400).json({ success: false, message: "Invalid note ID", data: null });
+    const note = await Note.findById(id).select("title category isPinned createdAt");
+    if (!note) return res.status(404).json({ success: false, message: "Note not found", data: null });
+    return res.status(200).json({ success: true, message: "Note summary fetched successfully", data: note });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
