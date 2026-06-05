@@ -210,3 +210,37 @@ exports.filterAndPaginate = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 14. GET /api/notes/sort-paginate — Sort + Paginate
+exports.sortAndPaginate = async (req, res) => {
+  try {
+    const { sortBy, order, page, limit } = req.query;
+    
+    const allowedSortFields = ["title", "createdAt", "updatedAt", "category"];
+    const sortField = allowedSortFields.includes(sortBy) ? sortBy : "createdAt";
+    const sortOrder = order === "asc" ? 1 : -1;
+    
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+    
+    const total = await Note.countDocuments();
+    const notes = await Note.find().sort({ [sortField]: sortOrder }).skip(skip).limit(limitNum);
+    
+    return res.status(200).json({
+      success: true,
+      message: "Notes fetched successfully",
+      data: notes,
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(total / limitNum),
+        hasNextPage: pageNum < Math.ceil(total / limitNum),
+        hasPrevPage: pageNum > 1
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};

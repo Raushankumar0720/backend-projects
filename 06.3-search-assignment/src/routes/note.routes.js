@@ -9,6 +9,7 @@ router.get("/search/all", noteController.searchAll);
 router.get("/search", noteController.searchByTitle);
 router.get("/filter-sort", noteController.filterAndSort);
 router.get("/filter-paginate", noteController.filterAndPaginate);
+router.get("/sort-paginate", noteController.sortAndPaginate);
 router.post("/", noteController.createNote);
 router.get("/", noteController.getAllNotes);
 router.get("/:id", noteController.getNoteById);
