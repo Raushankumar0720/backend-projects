@@ -266,3 +266,45 @@ exports.searchAndFilter = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 16. GET /api/notes/search-sort-paginate — Search + Sort + Paginate
+exports.searchSortPaginate = async (req, res) => {
+  try {
+    const { q, sortBy, order, page, limit } = req.query;
+    if (!q) return res.status(400).json({ success: false, message: "Search query 'q' is required", data: null });
+    
+    const filter = {
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { content: { $regex: q, $options: "i" } }
+      ]
+    };
+    
+    const allowedSortFields = ["title", "createdAt", "updatedAt", "category"];
+    const sortField = allowedSortFields.includes(sortBy) ? sortBy : "createdAt";
+    const sortOrder = order === "asc" ? 1 : -1;
+    
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+    
+    const total = await Note.countDocuments(filter);
+    const notes = await Note.find(filter).sort({ [sortField]: sortOrder }).skip(skip).limit(limitNum);
+    
+    return res.status(200).json({
+      success: true,
+      message: `Search results for: ${q}`,
+      data: notes,
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(total / limitNum),
+        hasNextPage: pageNum < Math.ceil(total / limitNum),
+        hasPrevPage: pageNum > 1
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};
