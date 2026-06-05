@@ -1,0 +1,179 @@
+{
+  "info": {
+    "name": "Notes_Search_API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "CRUD Endpoints",
+      "item": [
+        {
+          "name": "Create Note",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/notes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Work standup\",\n  \"content\": \"Discuss deployment targets\",\n  \"category\": \"work\",\n  \"isPinned\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Bulk Notes",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/notes/bulk",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": [\n    {\n      \"title\": \"Study Math\",\n      \"content\": \"Solve algebra problems\",\n      \"category\": \"study\",\n      \"isPinned\": false\n    },\n    {\n      \"title\": \"Buy Groceries\",\n      \"content\": \"Apples, Milk, Bread\",\n      \"category\": \"personal\",\n      \"isPinned\": false\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Notes",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes"
+          }
+        },
+        {
+          "name": "Get Note by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/:id"
+          }
+        },
+        {
+          "name": "Replace Note",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/notes/:id",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Replaced Title\",\n  \"content\": \"Replaced content\",\n  \"category\": \"personal\",\n  \"isPinned\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Partial Update Note",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/notes/:id",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isPinned\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Note",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/notes/:id"
+          }
+        },
+        {
+          "name": "Delete Notes Bulk",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/notes/bulk",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": []\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search Endpoints",
+      "item": [
+        {
+          "name": "Search Title Only",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/search?q=work"
+          }
+        },
+        {
+          "name": "Search Content Only",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/search/content?q=deployment"
+          }
+        },
+        {
+          "name": "Search Title and Content",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/search/all?q=node"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Combined Queries (Two Concepts)",
+      "item": [
+        {
+          "name": "Filter and Sort",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/filter-sort?category=work&sortBy=title&order=asc"
+          }
+        },
+        {
+          "name": "Filter and Paginate",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/filter-paginate?isPinned=true&page=1&limit=2"
+          }
+        },
+        {
+          "name": "Sort and Paginate",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/sort-paginate?sortBy=createdAt&order=desc&page=1&limit=5"
+          }
+        },
+        {
+          "name": "Search and Filter",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/search-filter?q=meeting&category=work"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Combined Queries (Three Concepts)",
+      "item": [
+        {
+          "name": "Search, Sort and Paginate",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/search-sort-paginate?q=node&sortBy=title&order=asc&page=1&limit=2"
+          }
+        },
+        {
+          "name": "Filter, Sort and Paginate",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/filter-sort-paginate?category=work&isPinned=true&sortBy=createdAt&order=desc&page=1&limit=5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Master Query Endpoint",
+      "item": [
+        {
+          "name": "Master Query",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/notes/query?q=meeting&category=work&isPinned=true&sortBy=title&order=desc&page=1&limit=3"
+          }
+        }
+      ]
+    }
+  ]
+}
