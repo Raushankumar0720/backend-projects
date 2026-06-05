@@ -6,7 +6,7 @@ A clean and professional REST API built with **Node.js, Express, and MongoDB (Mo
 
 ## 🔗 Links
 - **Postman Published Documentation:** [View API Docs](https://documenter.getpostman.com/view/50841514/2sBXwpQCXH)
-- **Live Deployed API:** `https://your-deployed-app.onrender.com` *(Replace this link after deploying to Render/Railway)*
+- **Live Deployed API:** [View Live API](https://backend-projects-lho4.onrender.com/)
 
 ---
 
@@ -49,6 +49,7 @@ Base URL: `/api/notes`
 
 | Method | Endpoint | Description | Payloads / Variables |
 | :--- | :--- | :--- | :--- |
+| **GET** | `/` | Root Welcome Endpoint | *None* |
 | **POST** | `/api/notes` | Create a single note | JSON Body with `title`, `content`, `category`, `isPinned` |
 | **POST** | `/api/notes/bulk` | Create multiple notes at once | JSON Body with `notes` array |
 | **GET** | `/api/notes` | Get all notes | *None* |
