@@ -158,3 +158,22 @@ exports.searchAll = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
   }
 };
+
+// 12. GET /api/notes/filter-sort — Filter + Sort
+exports.filterAndSort = async (req, res) => {
+  try {
+    const { category, isPinned, sortBy, order } = req.query;
+    const filter = {};
+    if (category) filter.category = category;
+    if (isPinned !== undefined) filter.isPinned = isPinned === "true";
+    
+    const allowedSortFields = ["title", "createdAt", "updatedAt", "category"];
+    const sortField = allowedSortFields.includes(sortBy) ? sortBy : "createdAt";
+    const sortOrder = order === "asc" ? 1 : -1;
+    
+    const notes = await Note.find(filter).sort({ [sortField]: sortOrder });
+    return res.status(200).json({ success: true, message: "Notes fetched successfully", count: notes.length, data: notes });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Unexpected server or database error", data: null });
+  }
+};

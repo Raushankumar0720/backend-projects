@@ -7,6 +7,7 @@ router.delete("/bulk", noteController.deleteNotesBulk);
 router.get("/search/content", noteController.searchByContent);
 router.get("/search/all", noteController.searchAll);
 router.get("/search", noteController.searchByTitle);
+router.get("/filter-sort", noteController.filterAndSort);
 router.post("/", noteController.createNote);
 router.get("/", noteController.getAllNotes);
 router.get("/:id", noteController.getNoteById);
